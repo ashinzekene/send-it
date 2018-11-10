@@ -12,11 +12,11 @@ var createTables = function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return pool.query('CREATE TABLE IF NOT EXISTS users (\n      id SERIAL,\n      firstname VARCHAR(40),\n      lastname VARCHAR(40),\n      othername VARCHAR(40),\n      email VARCHAR(256),\n      registered DATE,\n      isAdmin BIT,\n      PRIMARY KEY (id)\n    )');
+            return pool.query('CREATE TABLE IF NOT EXISTS users (\n      id SERIAL,\n      firstname VARCHAR(40),\n      lastname VARCHAR(40),\n      othername VARCHAR(40),\n      email VARCHAR(256) UNIQUE,\n      registered DATE,\n      isAdmin BIT,\n      PRIMARY KEY (id)\n    )');
 
           case 3:
             _context.next = 5;
-            return pool.query('CREATE TABLE IF NOT EXISTS parcel (\n      id SERIAL,\n      placedBy INT,\n      weight FLOAT,\n      weightMetric metric_t,\n      sentOn  DATE,\n      deliveredOn  DATE,\n      "status" status_t,\n      "from" VARCHAR(120),\n      "to" VARCHAR(120),\n      location VARCHAR(120),\n      PRIMARY KEY (id),\n      FOREIGN KEY (placedBy) REFERENCES users(id))');
+            return pool.query('CREATE TABLE IF NOT EXISTS parcel (\n      id SERIAL,\n      placedBy INT,\n      weight FLOAT,\n      weightMetric metric_t,\n      sentOn  DATE,\n      deliveredOn  DATE,\n      "status" status_t,\n      "from" VARCHAR(120),\n      "to" VARCHAR(120),\n      currentLocation VARCHAR(120),\n      PRIMARY KEY (id),\n      FOREIGN KEY (placedBy) REFERENCES users(id))');
 
           case 5:
             _context.next = 7;
@@ -70,9 +70,6 @@ var pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT
 });
-
-console.log('Creating Tables');
-
 
 pool.on('connect', function () {
   console.log('Connected to pool');
