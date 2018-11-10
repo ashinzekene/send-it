@@ -22,7 +22,7 @@ var requireAuth = function () {
           case 3:
             payload = _context.sent;
             _context.next = 6;
-            return _user2.default.findOne({ where: { email: payload.email } });
+            return _user2.default.getOne({ where: { email: payload.email } });
 
           case 6:
             user = _context.sent;

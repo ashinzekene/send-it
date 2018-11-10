@@ -24,7 +24,7 @@ describe('USERS', () => {
     expect(body).to.be.an('array');
   });
   
-  it(`GET ${URL_PREFIX}/:id Should get a single user by id`, async () => {
+  it(`GET ${URL_PREFIX}users/:id Should get a single user by id`, async () => {
     const { body, status } = await chaiReq.get(`${URL_PREFIX}users/1`)
     expect(status).to.equal(200);
     expect(body).to.include.all.keys('firstname', 'lastname', 'email');

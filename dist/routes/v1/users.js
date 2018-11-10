@@ -67,7 +67,7 @@ router.get('/:user', function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _user2.default.getOneByID(req.params.user);
+            return _user2.default.getOne('Ekene', 'firstname');
 
           case 3:
             user = _context2.sent;

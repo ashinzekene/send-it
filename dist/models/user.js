@@ -42,16 +42,17 @@ exports.default = function () {
 
       return getAll;
     }(),
-    getOneByID: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id) {
+    getOne: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(val) {
+        var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'id';
         var query, users;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 query = {
-                  text: 'SELECT DISTINCT * FROM users\n      WHERE id=$1',
-                  values: [id]
+                  text: 'SELECT DISTINCT * FROM users\n      WHERE ' + prop + '=$1',
+                  values: [val]
                 };
                 _context2.next = 3;
                 return _index2.default.query(query);
@@ -68,11 +69,11 @@ exports.default = function () {
         }, _callee2, this);
       }));
 
-      function getOneByID(_x) {
+      function getOne(_x2) {
         return _ref2.apply(this, arguments);
       }
 
-      return getOneByID;
+      return getOne;
     }(),
     create: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
@@ -101,7 +102,7 @@ exports.default = function () {
         }, _callee3, this);
       }));
 
-      function create(_x2) {
+      function create(_x3) {
         return _ref3.apply(this, arguments);
       }
 
