@@ -10,6 +10,10 @@ var _express2 = _interopRequireDefault(_express);
 
 require('dotenv/config');
 
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
 require('./models/index');
 
 var _index = require('./routes/index');
@@ -22,6 +26,7 @@ var PORT = process.env.PORT || 4000;
 
 var app = (0, _express2.default)();
 
+app.use(_bodyParser2.default.json());
 app.use('/api', _index2.default);
 
 app.get('/', function (req, res) {

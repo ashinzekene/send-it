@@ -41,6 +41,39 @@ exports.default = function () {
       }
 
       return getAll;
+    }(),
+    create: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var values, query, users;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                values = Object.values(params);
+                query = {
+                  text: 'INSERT INTO users \n      (firstname, lastname, othername, email, registered, isAdmin) VALUES\n      ($1, $2, $3, $4, $5, $6)',
+                  values: values
+                };
+                _context2.next = 4;
+                return _index2.default.query(query);
+
+              case 4:
+                users = _context2.sent;
+                return _context2.abrupt('return', users.rows);
+
+              case 6:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function create(_x) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return create;
     }()
   };
 }();
