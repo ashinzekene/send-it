@@ -23,11 +23,17 @@ describe('USERS', () => {
     expect(status).to.equal(200);
     expect(body).to.be.an('array');
   });
-
-  it(`POST ${URL_PREFIX} Should create a user`, async () => {
-    const { body, status } = await chaiReq.post(`${URL_PREFIX}users`).send(testUser);
+  
+  it(`GET ${URL_PREFIX}/:id Should get a single user by id`, async () => {
+    const { body, status } = await chaiReq.get(`${URL_PREFIX}users/1`)
     expect(status).to.equal(200);
-    expect(body).to.be.an('array');
+    expect(body).to.include.all.keys('firstname', 'lastname', 'email');
   });
+
+  // it(`POST ${URL_PREFIX} Should create a user`, async () => {
+  //   const { body, status } = await chaiReq.post(`${URL_PREFIX}users`).send(testUser);
+  //   expect(status).to.equal(200);
+  //   expect(body).to.be.an('array');
+  // });
 
 })

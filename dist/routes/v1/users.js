@@ -58,13 +58,49 @@ router.get('/', function () {
     return _ref.apply(this, arguments);
   };
 }());
-
-router.post('/', function () {
+router.get('/:user', function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
-    var params, users;
+    var user;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return _user2.default.getOneByID(req.params.user);
+
+          case 3:
+            user = _context2.sent;
+
+            res.json(user);
+            _context2.next = 10;
+            break;
+
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2['catch'](0);
+
+            _index2.default.handleError(_context2.t0, res);
+
+          case 10:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, undefined, [[0, 7]]);
+  }));
+
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+
+router.post('/', function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res) {
+    var params, users;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             params = {
               firstname: req.body.firstname || '',
@@ -74,24 +110,24 @@ router.post('/', function () {
               registered: new Date(),
               isAdmin: 0
             };
-            _context2.next = 3;
+            _context3.next = 3;
             return _user2.default.create(params);
 
           case 3:
-            users = _context2.sent;
+            users = _context3.sent;
 
             res.json(users);
 
           case 5:
           case 'end':
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2, undefined);
+    }, _callee3, undefined);
   }));
 
-  return function (_x3, _x4) {
-    return _ref2.apply(this, arguments);
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }());
 
