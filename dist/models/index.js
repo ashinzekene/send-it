@@ -32,7 +32,7 @@ console.log('Creating Tables');
 pool.query('CREATE TABLE IF NOT EXISTS users (\n  id INT,\n  firstname VARCHAR(20),\n  lastname VARCHAR(20),\n  othername VARCHAR(20),\n  email VARCHAR(20),\n  registered DATE,\n  isAdmin BIT,\n  PRIMARY KEY (id)\n)').then(function () {
   return pool.query('CREATE TYPE status_t AS ENUM(\'placed\', \'transiting\', \'delivered\');\n    CREATE TYPE metric_t AS ENUM(\'KG\', \'POUNDS\');\n    \n    CREATE TABLE IF NOT EXISTS parcel (\n    id INT,\n    placedBy INT,\n    weight Float,\n    weightMetric metric_t,\n    sentOn  DATE,\n    deliveredOn  DATE,\n    "status" status_t,\n    "from" VARCHAR(40),\n    "to" VARCHAR(40),\n    location VARCHAR(40),\n    PRIMARY KEY (id),\n    FOREIGN KEY (placedBy) REFERENCES users(id))');
 }).catch(function (err) {
-  console.log(err);
+  console.log('Some error occurred during running the query', err.message);
 });
 
 pool.on('connect', function () {
