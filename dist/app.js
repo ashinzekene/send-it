@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -31,3 +35,5 @@ app.listen(PORT, function (err) {
     console.log('Server running on port ' + PORT);
   }
 });
+
+exports.default = app;

@@ -43,6 +43,4 @@ pool.on('error', function (err) {
   console.log('Could not connect', err.message);
 });
 
-exports.default = {
-  pool: pool
-};
+exports.default = pool;

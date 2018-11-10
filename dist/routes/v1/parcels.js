@@ -16,4 +16,8 @@ router.get('/', function (req, res) {
   res.json({ message: 'You should get all parcels' });
 });
 
+router.get('/:id', function (req, res) {
+  res.json({ message: 'Get a parcel by its ID' });
+});
+
 exports.default = router;

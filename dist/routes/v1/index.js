@@ -20,9 +20,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.use('/user', _users2.default);
+router.use('/users', _users2.default);
 
-router.use('/parcel', _parcels2.default);
+router.use('/parcels', _parcels2.default);
 
 router.get('/', function (req, res) {
   res.json({ message: 'Welcome to the version 1 API' });
