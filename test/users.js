@@ -26,11 +26,20 @@ describe('USERS', () => {
 
   it(`POST ${URL_PREFIX}auth/signup Should create a user`, async () => {
     const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testUser);
-    id = body.data.id;
+    id = body.data[0].user.id;
     expect(status).to.equal(200);
-    expect(body.data).to.include.all.keys('firstname', 'lastname', 'email');
+    expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email');
   });
   
+  it(`POST ${URL_PREFIX}auth/signup Should create a user and return a token`, async () => {
+    const testUser2 = { ...testUser, email: 'ekonash28@gmail.com' };
+    const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testUser2);
+    token = body.data[0].token;
+    expect(status).to.equal(200);
+    expect(body.data[0]).to.include.all.keys('token', 'user');
+    expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email',);
+  });
+
   it(`GET ${URL_PREFIX} Should get all users`, async () => {
     const { body, status } = await chaiReq.get(`${URL_PREFIX}users`)
     expect(status).to.equal(200);
@@ -40,15 +49,16 @@ describe('USERS', () => {
   it(`GET ${URL_PREFIX}users/:id Should get a single user by id`, async () => {
     const { body, status } = await chaiReq.get(`${URL_PREFIX}users/${id}`)
     expect(status).to.equal(200);
-    expect(body.data).to.include.all.keys('firstname', 'lastname', 'email');
+    expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email');
   });
 
-  it(`POST ${URL_PREFIX}auth/signup Should create a user and return a token`, async () => {
-    const testUser2 = { ...testUser, email: 'ekonash28@gmail.com' };
-    const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testUser2);
-    token = body.data.token;
+  it(`GET ${URL_PREFIX}auth/ Should get an already signed in user with token`, async () => {
+    const { body, status } = await chaiReq
+    .get(`${URL_PREFIX}auth/`)
+    .set('Authorization', `Bearer ${token}`)
     expect(status).to.equal(200);
-    expect(body.data).to.include.all.keys('firstname', 'lastname', 'email', 'token');
+    expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email');
+    expect(body.data[0].user).to.have.property('email', 'ekonash28@gmail.com');
   });
 
 })
