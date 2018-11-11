@@ -9,6 +9,7 @@ const testUser = {
   firstname: 'Ekene',
   lastname: 'Ekonash',
   othername: 'Eky',
+  password: 'mypassword',
   email: 'ekonash1@gmail.com',
 }
 
@@ -61,4 +62,27 @@ describe('USERS', () => {
     expect(body.data[0].user).to.have.property('email', 'ekonash28@gmail.com');
   });
 
+  it(`GET ${URL_PREFIX}auth/ Should show unauthorized without auth header`, async () => {
+    const { body, status } = await chaiReq.get(`${URL_PREFIX}auth/`)
+    expect(status).to.equal(401);
+    expect(body.status).to.eql(401);
+    expect(body.error).to.include('Authorization');
+  });
+  
+  it(`POST ${URL_PREFIX}auth/login login correctly`, async () => {
+    const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/login`)
+    .send({ email: testUser.email, password: testUser.password });
+    expect(status).to.equal(200);
+    expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email');
+    expect(body.data[0].user).to.have.property('email', testUser.email);
+  });
+
+  it(`POST ${URL_PREFIX}auth/login invalid credentials should fail`, async () => {
+    const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/login`)
+    .send({ email: testUser.email, password: 'testUser.password' });
+    expect(status).to.equal(401);
+    expect(body.status).to.equal(401);
+    expect(body.error).to.include('Password');
+  });
+  
 })
