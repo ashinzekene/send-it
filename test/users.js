@@ -7,9 +7,9 @@ chai.use(chaiHttp);
 
 const testUser = {
   firstname: 'Ekene',
-  lastname: 'Ashinze',
+  lastname: 'Ekonash',
   othername: 'Eky',
-  email: 'ashinzekene@gmail.com',
+  email: 'ekonash28@gmail.com',
 }
 
 const URL_PREFIX = '/api/v1/'
@@ -30,10 +30,17 @@ describe('USERS', () => {
     expect(body).to.include.all.keys('firstname', 'lastname', 'email');
   });
 
-  // it(`POST ${URL_PREFIX} Should create a user`, async () => {
-  //   const { body, status } = await chaiReq.post(`${URL_PREFIX}users`).send(testUser);
-  //   expect(status).to.equal(200);
-  //   expect(body).to.be.an('array');
-  // });
+  it(`POST ${URL_PREFIX} Should create a user`, async () => {
+    const { body, status } = await chaiReq.post(`${URL_PREFIX}users`).send(testUser);
+    expect(status).to.equal(200);
+    expect(body).to.include.all.keys('firstname', 'lastname', 'email');
+  });
+
+  it(`POST ${URL_PREFIX} Should create a user and return a token`, async () => {
+    const testUser2 = { ...testUser, email: 'ekonash28@gmail.com' };
+    const { body, status } = await chaiReq.post(`${URL_PREFIX}users`).send(testUser);
+    expect(status).to.equal(200);
+    expect(body).to.include.all.keys('firstname', 'lastname', 'email', 'token');
+  });
 
 })
