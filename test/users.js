@@ -22,7 +22,7 @@ const expect = chai.expect;
 
 describe('USERS', () => {
   after(async () => {
-    const { body } = await chaiReq.post(`${URL_PREFIX}drop/users`).send();
+    await chaiReq.post(`${URL_PREFIX}drop/users`).send();
   });
 
   it(`POST ${URL_PREFIX}auth/signup Should create a user`, async () => {
