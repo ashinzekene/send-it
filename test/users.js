@@ -12,6 +12,22 @@ const testUser = {
   password: 'mypassword',
   email: 'ekonash1@gmail.com',
 }
+const testParce1l = {
+  weight: '23',
+  to: 'Lagos',
+  from: 'Abuja',
+}
+const testParcel2 = {
+  weight: '23',
+  to: 'Lagos',
+  from: 'Abuja',
+}
+const testParcel3 = {
+  weight: '23',
+  to: 'Lagos',
+  from: 'Abuja',
+}
+
 
 let id;
 let token;
@@ -36,6 +52,7 @@ describe('USERS', () => {
     const testUser2 = { ...testUser, email: 'ekonash28@gmail.com' };
     const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testUser2);
     token = body.data[0].token;
+    id = body.data[0].user.id;
     expect(status).to.equal(200);
     expect(body.data[0]).to.include.all.keys('token', 'user');
     expect(body.data[0].user).to.include.all.keys('firstname', 'lastname', 'email',);
@@ -84,5 +101,21 @@ describe('USERS', () => {
     expect(body.status).to.equal(401);
     expect(body.error).to.include('Password');
   });
-  
+
+  it(`GET ${URL_PREFIX}users/:user/parcels Should show unauthorized without auth header`, async () => {
+    const createParcel = parcel => chaiReq.post(`${URL_PREFIX}parcels`)
+    .set('Authorization', `Bearer ${token}`)    
+    .send(parcel);
+    const b = await Promise.all([createParcel(testParce1l), createParcel(testParcel2), createParcel(testParcel3)]);
+    const parcels = b.map(({ body }) => body.data[0]);
+    const { body, status } = await chaiReq.get(`${URL_PREFIX}users/${id}/parcels`)
+    expect(status).to.equal(200);
+    expect(body.status).to.eql(200);
+    parcels.forEach((parcel, i) => {
+      expect(body.data[i].id).to.equal(parcel.id);
+      expect(body.data[i].id).to.equal(parcel.id);
+      expect(body.data[i].id).to.equal(parcel.id);
+    });
+    expect(body.data.length).to.eql(parcels.length);
+  });
 })
