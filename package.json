@@ -8,14 +8,16 @@
     "start": "nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npm run build && nodemon dist/index.js",
     "serve": "npm run build && node dist/index.js",
-    "test:w": "npm run build && mocha -w --require babel-register --exit",
-    "test": "npm run build && mocha --require babel-register --exit"
+    "old:test:w": "NODE_ENV=test && npm run build && mocha -w --require babel-register --exit",
+    "old:test": "NODE_ENV=test && npm run build && mocha --require babel-register --exit",
+    "test": "NODE_ENV=test nyc mocha --exit"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ashinze Ekene",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^5.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
@@ -25,7 +27,8 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.6"
+    "nodemon": "^1.18.6",
+    "nyc": "^13.1.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
@@ -36,5 +39,16 @@
     "jsonwebtoken": "^8.3.0",
     "pg": "^7.6.1",
     "un": "0.0.0"
+  },
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }
