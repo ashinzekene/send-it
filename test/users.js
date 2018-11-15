@@ -28,13 +28,12 @@ const testParcel3 = {
   from: 'Abuja',
 }
 
-
 let id;
 let token;
 
 const URL_PREFIX = '/api/v1/'
 const chaiReq = chai.request(server).keepOpen();
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('USERS', () => {
   after(async () => {
@@ -102,7 +101,7 @@ describe('USERS', () => {
     expect(body.error).to.include('Password');
   });
 
-  it(`GET ${URL_PREFIX}users/:user/parcels Should show unauthorized without auth header`, async () => {
+  it(`GET ${URL_PREFIX}users/:user/parcels Should fetch users parcels`, async () => {
     const createParcel = parcel => chaiReq.post(`${URL_PREFIX}parcels`)
     .set('Authorization', `Bearer ${token}`)    
     .send(parcel);
@@ -111,11 +110,8 @@ describe('USERS', () => {
     const { body, status } = await chaiReq.get(`${URL_PREFIX}users/${id}/parcels`)
     expect(status).to.equal(200);
     expect(body.status).to.eql(200);
-    parcels.forEach((parcel, i) => {
-      expect(body.data[i].id).to.equal(parcel.id);
-      expect(body.data[i].id).to.equal(parcel.id);
-      expect(body.data[i].id).to.equal(parcel.id);
-    });
+    expect(body.data[0].from).to.eql(testParce1l.from);
+    expect(body.data[0].to).to.eql(testParce1l.to);
     expect(body.data.length).to.eql(parcels.length);
   });
 })

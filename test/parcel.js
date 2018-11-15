@@ -20,7 +20,7 @@ const testParcel = {
 
 const URL_PREFIX = '/api/v1/'
 const chaiReq =  chai.request(server).keepOpen();
-const expect = chai.expect;
+const { expect } = chai;
 let id = 1;
 
 describe('PARCELS', () => {
