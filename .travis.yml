@@ -2,10 +2,6 @@ language: node_js
 sudo: false
 node_js:
   - 10
-  - 9
-  - 8
-  - 7
-  - 6
 install:
   - npm install
 script:
@@ -20,7 +16,7 @@ services:
   - postgresql
 before_script:
   - echo $DB_USER
-  - psql -c 'create database send_it_test; create user $DB_USER with password $DB_PASSWORD; grant all privileges on database send_it_test to user $DB_USER;' -U postgres
+  - psql -c 'create database send_it_test; create user send_it_test with password send_it_test; grant all privileges on database send_it_test to user send_it_test;' -U postgres
 env:
   globals:
-    - PGPORT=$DB_PORT
+    - PGPORT=$TEST_DB_PORT
