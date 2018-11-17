@@ -9,7 +9,15 @@ const testUser = {
   lastname: 'Ekonash',
   othername: 'Eky',
   password: 'mypassword',
-  email: 'ekonash2@gmail.com',
+  email: 'ekene@send_it.com',
+};
+const testAdmin = {
+  firstname: 'Ekene',
+  lastname: 'Ekonash',
+  othername: 'Eky',
+  password: 'mypassword',
+  email: 'admin@send_it.com',
+  isAdmin: 1,
 };
 const testParcel = {
   weight: '23',
@@ -23,6 +31,7 @@ const chaiReq = chai.request(server).keepOpen();
 const { expect } = chai;
 let parcelId = 1;
 let userToken;
+let adminToken;
 
 describe('PARCELS', () => {
   after(async () => {
@@ -85,5 +94,51 @@ describe('PARCELS', () => {
     expect(body.data.id).to.eql(parcelId);
     expect(body.data.to).to.eql('PortHarcourt');
     expect(body.data.message).to.eql('Parcel destination updated');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should not allow non-admin change order status`, async () => {
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/status`)
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({
+        status: 'transiting',
+      });
+    expect(status).to.eql(401);
+    expect(body.error).to.include('Unauthorized');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should allow only admins change order status`, async () => {
+    const { body: userBody } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testAdmin);
+    adminToken = userBody.data[0].token;
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/status`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'transiting',
+      });
+    expect(status).to.eql(200);
+    expect(body.data.id).to.eql(parcelId);
+    expect(body.data.status).to.eql('transiting');
+    expect(body.data.message).to.eql('Parcel status updated');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should not allow non-admin change order current location`, async () => {
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/currentlocation`)
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({
+        currentlocation: 'ogun',
+      });
+    expect(status).to.eql(401);
+    expect(body.error).to.include('Unauthorized');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should allow only admins change order current location`, async () => {
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/currentlocation`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        currentlocation: 'ogun',
+      });
+    expect(status).to.eql(200);
+    expect(body.data.id).to.eql(parcelId);
+    expect(body.data.currentlocation).to.eql('ogun');
+    expect(body.data.message).to.eql('Parcel location updated');
   });
 });
