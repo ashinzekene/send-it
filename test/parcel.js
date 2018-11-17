@@ -72,7 +72,7 @@ describe('PARCELS', () => {
         to: 'PortHarcourt',
       });
     expect(status).to.eql(401);
-    expect(body.error).to.eql('Unauthorized. Only the creator of this order can do that');
+    expect(body.error).to.include('Unauthorized');
   });
 
   it(`PATCH ${URL_PREFIX}parcels/:parcel/destination Should update parcel destination with parcel creator`, async () => {
@@ -81,8 +81,9 @@ describe('PARCELS', () => {
       .send({
         to: 'PortHarcourt',
       });
-    console.log(body.error);
     expect(status).to.eql(200);
-    // expect(body.error).to.include('No authorization');
+    expect(body.data.id).to.eql(parcelId);
+    expect(body.data.to).to.eql('PortHarcourt');
+    expect(body.data.message).to.eql('Parcel destination updated');
   });
 });

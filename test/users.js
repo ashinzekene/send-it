@@ -49,6 +49,7 @@ describe('USERS', () => {
   it(`POST ${URL_PREFIX}auth/signup Should create a user and return a token`, async () => {
     const testUser2 = { ...testUser, email: 'ekonash28@gmail.com' };
     const { body, status } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testUser2);
+    // eslint-disable-next-line
     token = body.data[0].token;
     userId = body.data[0].user.id;
     expect(status).to.equal(200);
