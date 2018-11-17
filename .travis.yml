@@ -1,0 +1,25 @@
+language: node_js
+sudo: false
+node_js:
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
+install:
+  - npm install
+script:
+  - npm lint
+deploy:
+  provider: heroku
+  api_key: 
+    secure: "1852fac1-9963-42ee-84a4-2a6cc7c1ce45"
+  on:
+    all_branches: true
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database send_it_test;' -U $DB_USER -P $DB_PASSWORD
+env:
+  globals:
+    - PGPORT=$DB_PORT
