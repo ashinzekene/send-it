@@ -8,7 +8,7 @@
     "start": "nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npm run build && nodemon dist/index.js",
     "serve": "npm run build && node dist/index.js",
-    "lint": "eslint --fix",
+    "lint": "./node_modules/.bin/eslint lib/ --fix",
     "old:test:w": "NODE_ENV=test && npm run build && mocha -w --require babel-register --exit",
     "old:test": "NODE_ENV=test && npm run build && mocha --require babel-register --exit",
     "test": "NODE_ENV=test nyc mocha --exit"
