@@ -19,6 +19,7 @@ deploy:
 services:
   - postgresql
 before_script:
+  - echo $DB_USER
   - psql -c 'create database send_it_test;' -U $DB_USER -P $DB_PASSWORD
 env:
   globals:
