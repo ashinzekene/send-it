@@ -12,11 +12,11 @@ deploy:
     secure: "1852fac1-9963-42ee-84a4-2a6cc7c1ce45"
   on:
     all_branches: true
-services:
-  - postgresql
-before_script:
-  - echo $DB_USER
-  - psql -c "create database send_it_test; create user send_it_test with password 'send_it_test'; grant all privileges on database send_it_test to send_it_test;' -U postgres
-env:
-  globals:
-    - PGPORT=$TEST_DB_PORT
+# services:
+#   - postgresql
+# before_script:
+#   - echo $DB_USER
+#   - psql -c "create database send_it_test; create user send_it_test with password 'send_it_test'; grant all privileges on database send_it_test to send_it_test;' -U postgres
+# env:
+#   globals:
+#     - PGPORT=$TEST_DB_PORT
