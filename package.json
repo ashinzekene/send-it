@@ -7,6 +7,7 @@
     "build": "babel lib -d dist",
     "start": "nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npm run build && nodemon dist/index.js",
+    "start:client": "parcel public/index.html",
     "serve": "npm run build && node dist/index.js",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
     "old:test:w": "NODE_ENV=test && npm run build && mocha -w --require babel-register --exit",
@@ -18,6 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-istanbul": "^5.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -33,12 +35,16 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
+    "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
     "pg": "^7.6.1",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "un": "0.0.0"
   },
   "nyc": {
