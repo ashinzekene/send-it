@@ -1,8 +1,14 @@
 {
-    "extends": "airbnb-base",
+    "extends": ["airbnb-base", "plugin:react/recommended"],
     "plugins": ["react"],
+    "parser": "babel-eslint",
     "env": {
         "mocha": true,
-        "node": true
+        "node": true,
+        "browser": true
+    },
+    "rules": {
+        "class-methods-use-this": "off",
+        "import/no-unresolved": "off"
     }
 }

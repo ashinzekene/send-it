@@ -1,0 +1,23 @@
+:root {
+  --theme-color-1: #551E54;
+  --theme-color-2: rgb(206, 20, 122);
+  --theme-color-3: #79C6D2;
+  --theme-color-4: #BEBEBE;
+}
+
+body {
+  color: var(--theme-color-2);
+}
+
+nav.navbar {
+  box-shadow: 1px 2px 20px 0px rgba(100, 100, 100, 0.3);
+  padding: 15px 10px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+
+.hero {
+  height: 300px;
+}

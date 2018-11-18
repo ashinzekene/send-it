@@ -1,5 +1,11 @@
 import React from 'react';
+import Header from './components/Header';
 
-export default () => (
-  <h1>Send It App</h1>
-)
+const App = ({ children }) => (
+  <div>
+    <Header />
+    {children}
+  </div>
+);
+
+export default App;
