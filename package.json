@@ -47,8 +47,8 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
     "pg": "^7.6.1",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2"
   },
   "nyc": {
     "require": [
@@ -61,5 +61,5 @@
     "sourceMap": false,
     "instrument": false
   },
-  "proxy": "http://localhost:4001"  
+  "proxy": "http://localhost:1234"
 }
