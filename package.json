@@ -4,14 +4,14 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npx babel lib -d dist && npx parcel build public/index.html build/",
-    "heroku:postinstall": "",
+    "build:server": "npx babel lib -d dist",
+    "build": "npx babel lib -d dist && npx parcel build public/index.html -d build",
+    "heroku:postinstall": "npm run build",
+    "start": "node dist/index.js",
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npm run start:client & npm start",
     "dev:client": "parcel public/index.html",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
-    "old:test:w": "NODE_ENV=test && npm run build && npx mocha -w --require babel-register --exit",
-    "old:test": "NODE_ENV=test && npm run build && npx mocha --require babel-register --exit",
     "test": "NODE_ENV=test npx nyc mocha --exit"
   },
   "keywords": [],
