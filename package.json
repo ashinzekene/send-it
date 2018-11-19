@@ -6,7 +6,7 @@
   "scripts": {
     "build:server": "npx babel lib -d dist",
     "build": "npx babel lib -d dist && npx parcel build public/index.html -d build",
-    "heroku:postinstall": "npm run build",
+    "heroku-postbuild": "npm run build",
     "start": "node dist/index.js",
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npm run start:client & npm start",
