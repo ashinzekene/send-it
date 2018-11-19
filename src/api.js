@@ -22,8 +22,10 @@ export default api;
 
 export const setToken = (t) => {
   token = t;
+  localStorage.setItem('token', t);
 };
 
 export const removeToken = () => {
   token = null;
+  localStorage.removeItem('token');
 };

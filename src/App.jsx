@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Header from './components/Header';
+import api from './api';
 
-const App = ({ children }) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    // dispatch({ type: 'LOGIN' })
+class App extends Component {
+  async componentDidMount() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        console.log('Authing');
+        const { data } = await api.get('/auth');
+        this.props.dispatch({ type: 'LOGIN', payload: data[0] });
+      } catch (err) {
+        console.log('Not logged in');
+      }
+    }
   }
-  return (
-  <div>
-    <Header />
-    {children}
-  </div>
-  );
-};
+
+  render() {
+    return (
+    <div>
+      <Header />
+      {this.props.children}
+    </div>
+    );
+  }
+}
 
 export default App;

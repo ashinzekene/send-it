@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { navigate } from '@reach/router/lib/history';
 import api from './api';
 
 export default class Auth extends Component {
@@ -21,6 +22,7 @@ export default class Auth extends Component {
     const { data, status, error } = await api.post(url, this.state.data);
     if (status === 200) {
       this.props.dispatch({ type: 'LOGIN', payload: data[0] });
+      navigate('/');
     } else {
       console.log(error);
     }
