@@ -8,6 +8,7 @@
         "browser": true
     },
     "rules": {
+        "react/prop-types": "off",
         "class-methods-use-this": "off",
         "import/no-unresolved": "off"
     }

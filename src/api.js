@@ -2,19 +2,20 @@ const toJSON = res => res.json();
 
 const API_ROOT = 'http://localhost:4001/api/v1';
 
-let token = null;
-const addOptions = (body) => {
-  let res = {};
-  if (body) res = { ...res, body };
+
+let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjA4LCJlbWFpbCI6IiIsInJvbGUiOiIwIiwiaWF0IjoxNTQyNjE5NzM5fQ.xdAkOs5G5iQ6Ld300Igxwjfm3budqvEUt0he97MpSQA';
+const addOptions = (method, body) => {
+  let res = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) res = { ...res, body: JSON.stringify(body) };
   if (token) {
-    res = { ...res, header: { Authorization: `Bearer ${token}` } };
+    res = { ...res, headers: { ...res.headers, Authorization: `Bearer ${token}` } };
   }
   return res;
 };
 
 const api = {
-  get: url => fetch(API_ROOT + url, addOptions()).then(toJSON),
-  post: (url, body) => fetch(API_ROOT + url, addOptions(body)).then(toJSON),
+  get: url => fetch(API_ROOT + url, addOptions('GET')).then(toJSON),
+  post: (url, body) => fetch(API_ROOT + url, addOptions('POST', body)).then(toJSON),
 };
 
 export default api;
