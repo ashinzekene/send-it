@@ -159,7 +159,6 @@ describe('PARCELS', () => {
       .send({
         to: 'PortHarcourt',
       });
-    console.log('Second', body);
     expect(status).to.eql(403);
     expect(body.error).to.include('has already been delivered');
   });
