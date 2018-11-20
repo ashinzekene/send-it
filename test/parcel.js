@@ -84,7 +84,7 @@ describe('PARCELS', () => {
     expect(body.error).to.include('Unauthorized');
   });
 
-  it(`PATCH ${URL_PREFIX}parcels/:parcel/destination Should update parcel destination with parcel creator`, async () => {
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/destination Should allow parcel creator update parcel destination`, async () => {
     const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/destination`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
@@ -96,7 +96,7 @@ describe('PARCELS', () => {
     expect(body.data.message).to.eql('Parcel destination updated');
   });
 
-  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should not allow non-admin change order status`, async () => {
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should not allow non-admin change parcel status`, async () => {
     const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/status`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
@@ -106,7 +106,7 @@ describe('PARCELS', () => {
     expect(body.error).to.include('Unauthorized');
   });
 
-  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should allow only admins change order status`, async () => {
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/status Should allow only admins change parcel status`, async () => {
     const { body: userBody } = await chaiReq.post(`${URL_PREFIX}auth/signup`).send(testAdmin);
     adminToken = userBody.data[0].token;
     const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/status`)
@@ -120,7 +120,7 @@ describe('PARCELS', () => {
     expect(body.data.message).to.eql('Parcel status updated');
   });
 
-  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should not allow non-admin change order current location`, async () => {
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should not allow non-admin change parcel current location`, async () => {
     const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/currentlocation`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
@@ -130,7 +130,7 @@ describe('PARCELS', () => {
     expect(body.error).to.include('Unauthorized');
   });
 
-  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should allow only admins change order current location`, async () => {
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/currentlocation Should allow only admins change parcel current location`, async () => {
     const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/currentlocation`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
@@ -140,5 +140,27 @@ describe('PARCELS', () => {
     expect(body.data.id).to.eql(parcelId);
     expect(body.data.currentlocation).to.eql('ogun');
     expect(body.data.message).to.eql('Parcel location updated');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/delivered Should allow only admins mark parcel as delivered`, async () => {
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/delivered`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(status).to.eql(200);
+    expect(body.data.id).to.eql(parcelId);
+    expect(body.data.deliveredon).to.exist; // eslint-disable-line
+    expect(body.data.message).to.eql('Parcel marked delivered');
+  });
+
+  it(`PATCH ${URL_PREFIX}parcels/:parcel/destination Should prevent changing parcel destination after it parcel has been delivered`, async () => {
+    await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/delivered`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    const { body, status } = await chaiReq.patch(`${URL_PREFIX}parcels/${parcelId}/destination`)
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({
+        to: 'PortHarcourt',
+      });
+    console.log('Second', body);
+    expect(status).to.eql(403);
+    expect(body.error).to.include('has already been delivered');
   });
 });
