@@ -4,11 +4,13 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel lib -d dist",
-    "start": "nodemon --watch lib --exec babel-node lib/index.js",
-    "dev": "npm run start:client & npm start",
-    "start:client": "parcel public/index.html",
-    "serve": "npm run build && node dist/index.js",
+    "build:server": "npx babel lib -d dist",
+    "build": "npx babel lib -d dist && npx parcel build public/index.html -d build",
+    "heroku-postbuild": "npm run build",
+    "start": "node dist/index.js",
+    "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
+    "dev": "npx concurrently npm:dev:*",
+    "dev:client": "parcel public/index.html",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
     "old:test:w": "NODE_ENV=test && npm run build && mocha -w --require babel-register --exit",
     "old:test": "NODE_ENV=test && npm run build && mocha --require babel-register --exit",
@@ -47,9 +49,11 @@
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
+    "parcel-plugin-inlinesvg": "^0.1.0",
     "pg": "^7.6.1",
     "react": "16.7.0-alpha.2",
-    "react-dom": "16.7.0-alpha.2"
+    "react-dom": "16.7.0-alpha.2",
+    "react-google-maps": "^9.4.5"
   },
   "nyc": {
     "require": [

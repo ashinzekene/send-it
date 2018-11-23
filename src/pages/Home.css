@@ -1,0 +1,8 @@
+.parcel-icon {
+  width: 500px;
+  height: 500px;
+  right: -20px;
+  top: 30px;
+  transform: scale(0.6);
+  position: absolute;
+}
