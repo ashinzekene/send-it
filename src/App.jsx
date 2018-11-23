@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Header from './components/Header';
+import api from './api';
 
 class App extends Component {
   async componentDidMount() {
@@ -13,12 +14,15 @@ class App extends Component {
       }
     }
   }
-  return (
-  <div>
-    <Header />
-    {children}
-  </div>
-  );
-};
+
+  render() {
+    return (
+    <div>
+      <Header />
+      {this.props.children}
+    </div>
+    );
+  }
+}
 
 export default App;

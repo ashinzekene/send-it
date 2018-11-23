@@ -10,11 +10,6 @@ import CreateParcel from './pages/CreateParcel';
 import Admin from './pages/Admin';
 import './App.css';
 import { removeToken, setToken } from './api';
-<<<<<<< Updated upstream
-=======
-import { AuthProvider } from './context';
-import Parcel from './pages/Parcel';
->>>>>>> Stashed changes
 
 const ConditionalRoute = ({
   condition, errorText, component: Comp, redirect = '/auth', ...props
@@ -31,11 +26,8 @@ const ConditionalRoute = ({
   return [];
 };
 
-<<<<<<< Updated upstream
 const AuthContext = React.createContext({ user: {} });
 
-=======
->>>>>>> Stashed changes
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN': {
@@ -60,50 +52,9 @@ const AppRouter = () => {
       <Router>
         <App dispatch={dispatch} path="/">
           <Home path="/" />
-<<<<<<< Updated upstream
           <Parcels path="/parcels" />
           <ConditionalRoute component={Auth} state={user} dispatch={dispatch} path="/auth" condition={!user.id} />
           <ConditionalRoute path="/users" component={Home} condition={ !!user.id } />
-=======
-          <Parcels dispatch={dispatch} path="parcels" />
-          <ConditionalRoute
-            dispatch={dispatch}
-            component={Auth}
-            state={user}
-            path="auth"
-            redirect="/"
-            condition={!user.id}
-          />
-          <ConditionalRoute
-            dispatch={dispatch}
-            path="users"
-            state={user}
-            component={Home}
-            condition={!!user.id}
-          />
-          <ConditionalRoute
-            dispatch={dispatch}
-            path="my-parcels"
-            state={user}
-            component={Parcels}
-            condition={!!user.id}
-          />
-          <Parcel path="parcels/:parcelId" />
-          <ConditionalRoute
-            dispatch={dispatch}
-            path="create"
-            state={user}
-            component={CreateParcel}
-            condition={!!user.id}
-          />
-          <ConditionalRoute
-            dispatch={dispatch}
-            path="admin"
-            state={user}
-            component={Admin}
-            condition={!!user.isadmin}
-          />
->>>>>>> Stashed changes
         </App>
       </Router>
     </AuthContext.Provider>
