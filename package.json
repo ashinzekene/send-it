@@ -9,7 +9,7 @@
     "heroku-postbuild": "npm run build",
     "start": "node dist/index.js",
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
-    "dev": "npm run start:client & npm start",
+    "dev": "npx concurrently npm:dev:*",
     "dev:client": "parcel public/index.html",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
     "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit"
@@ -29,6 +29,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
     "codecov": "^3.1.0",
+    "concurrently": "^4.1.0",
     "cssnano": "^4.1.7",
     "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
