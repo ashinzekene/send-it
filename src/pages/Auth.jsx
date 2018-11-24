@@ -33,7 +33,7 @@ export default class Auth extends Component {
 
   render() {
     return (
-      <div className="container create-parcel">
+      <div className="container create-parcel page">
         <form className="p-4 mx-auto mt-5 pt-5 auth-form" onSubmit={ this.handleSubmit }>
           { this.state.login ? (
             <Fragment>

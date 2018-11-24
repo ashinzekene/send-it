@@ -19,7 +19,7 @@ export default class Admin extends Component {
   render() {
     const { parcels, error } = this.state;
     return (
-      <div className="admin">
+      <div className="admin page">
         <div className="py-4 parcels-container">
           { !!error && <div className="alert alert-error">{error}</div> }
           {parcels === null && <div>Loading</div> }

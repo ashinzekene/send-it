@@ -8,7 +8,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="hero d-flex flex-wrap p-3 align-items-center">
+      <div className="hero d-flex flex-wrap p-3 align-items-center page">
         <div className="text-content">
           <h1 className="display-2 w-100">Send IT</h1>
           <h2 className=" font-italic">Make orders, track your parcels easily...</h2>

@@ -21,7 +21,7 @@ export default class Parcels extends Component {
   render() {
     const { parcels, error } = this.state;
     return (
-      <div className="p-3 container parcels">
+      <div className="p-3 container parcels page">
         <h3>Parcels</h3>
         <div className="py-4 parcels-container">
           {parcels === null && <div>Loading</div> }
@@ -32,7 +32,7 @@ export default class Parcels extends Component {
               <div className="card-body">
                 <h5 className="card-title">{parcel.from} &rarr; {parcel.to}</h5>
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p>
-                <div href="#" className="label label-success">{parcel.status}</div>
+                <div href="#" className="badge badge-success">{parcel.status}</div>
                 <div href="#" className="card-link">{ (new Date(parcel.senton)).toDateString()}</div>
               </div>
             </Link>

@@ -26,7 +26,7 @@ export default class CreateParcel extends Component {
 
   render() {
     return (
-      <div className="d-flex align-items-stretch flex-nowrap create-parcel">
+      <div className="d-flex align-items-stretch flex-nowrap create-parcel page">
         <form className="p-4 col-md-6 col-sm-12" onSubmit={ this.handleSubmit }>
           <h3 className="py-4">Create a parcel...</h3>
           <div className="form-group">
