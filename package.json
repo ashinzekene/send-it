@@ -49,9 +49,11 @@
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
+    "parcel-plugin-inlinesvg": "^0.1.0",
     "pg": "^7.6.1",
     "react": "16.7.0-alpha.2",
-    "react-dom": "16.7.0-alpha.2"
+    "react-dom": "16.7.0-alpha.2",
+    "react-google-maps": "^9.4.5"
   },
   "nyc": {
     "require": [

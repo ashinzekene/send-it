@@ -3,33 +3,40 @@ import React, { useReducer } from 'react';
 import { render } from 'react-dom';
 import { Router, navigate } from '@reach/router';
 import App from './App';
-import Home from './Home';
-import Auth from './Auth';
-import Parcels from './Parcels';
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import Parcels from './pages/Parcels';
+import CreateParcel from './pages/CreateParcel';
+import Admin from './pages/Admin';
 import './App.css';
 import { removeToken, setToken } from './api';
-import { AuthProvider } from './context';
-import CreateParcel from './CreateParcel';
 
 const ConditionalRoute = ({
-  condition, component: Comp, redirect = '/auth', ...props
+  condition, errorText, component: Comp, redirect = '/auth', ...props
 }) => {
-  if (condition) return <Comp {...props} />;
+  if (condition) {
+    return (
+      <Comp
+        error={errorText || 'Not authenticated'}
+        {...props}
+      />
+    );
+  }
   navigate(redirect);
   return [];
 };
 
+const AuthContext = React.createContext({ user: {} });
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN': {
       setToken(action.payload.token);
-      return { ...state, user: action.payload.user };
+      return { ...state, user: action.payload };
     }
     case 'LOGOUT': {
       removeToken();
-      navigate('/');
-      return { ...state, user: {} };
+      return { ...state, user: null };
     }
     default: {
       return state;
@@ -41,18 +48,16 @@ const AppRouter = () => {
   const [{ user }, dispatch] = useReducer(reducer, { user: {} });
 
   return (
-    <AuthProvider value={{ user, dispatch }}>
+    <AuthContext.Provider value={{}}>
       <Router>
         <App dispatch={dispatch} path="/">
           <Home path="/" />
-          <Parcels dispatch={dispatch} path="/parcels" />
-          <ConditionalRoute component={Auth} state={user} dispatch={dispatch} path="/auth" redirect="/" condition={!user.id} />
-          <ConditionalRoute dispatch={dispatch} path="/users" component={Home} condition={!!user.id} />
-          <ConditionalRoute dispatch={dispatch} path="/my-parcels" component={Parcels} condition={!!user.id} />
-          <ConditionalRoute dispatch={dispatch} path="/create" component={CreateParcel} condition={!!user.id} />
+          <Parcels path="/parcels" />
+          <ConditionalRoute component={Auth} state={user} dispatch={dispatch} path="/auth" condition={!user.id} />
+          <ConditionalRoute path="/users" component={Home} condition={ !!user.id } />
         </App>
       </Router>
-    </AuthProvider>
+    </AuthContext.Provider>
   );
 };
 

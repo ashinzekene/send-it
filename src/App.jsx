@@ -7,7 +7,6 @@ class App extends Component {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        console.log('Authing');
         const { data } = await api.get('/auth');
         this.props.dispatch({ type: 'LOGIN', payload: data[0] });
       } catch (err) {
