@@ -12,7 +12,7 @@
     "dev": "npm run start:client & npm start",
     "dev:client": "parcel public/index.html",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
-    "test": "NODE_ENV=test npx nyc mocha --exit"
+    "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit"
   },
   "keywords": [],
   "author": "Ashinze Ekene",
