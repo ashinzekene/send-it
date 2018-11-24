@@ -7,6 +7,7 @@ import MapComponent from '../components/CreateParcelMap';
 export default class CreateParcel extends Component {
   state = {
     data: {},
+    location: { lat: 6.5538, lng: 3.3665 },
   }
 
   handleChange = x => (e) => {
@@ -24,29 +25,52 @@ export default class CreateParcel extends Component {
     }
   }
 
+  searchLocation = type => async (event) => {
+    const { value } = event.currentTarget;
+    let t;
+    if (value) {
+      const { results } = await api.getPlace(value);
+      console.log(results);
+      if (results.length > 0) {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          this.setState(({ data }) => ({
+            location: results[0].geometry.location,
+            data: { ...data, [type]: results[0].formatted_address },
+          }));
+        }, 600);
+      } else {
+        console.log('Not found', results);
+      }
+    }
+    event.persist();
+  }
+
   render() {
     return (
       <div className="d-flex align-items-stretch flex-nowrap create-parcel page">
         <form className="p-4 col-md-6 col-sm-12" onSubmit={ this.handleSubmit }>
           <h3 className="py-4">Create a parcel...</h3>
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="from">From</label>
-            <input required type="text" onChange={this.handleChange('from')} value={this.state.from} className="form-control" id="from" />
+            <input required type="text" onChange={this.searchLocation('from')} className="form-control" id="from" />
           </div>
-          <div className="form-group">
+          <div className="py-2">Location: {this.state.data.from}</div>
+          <div className="form-group mb-1 mt-3">
             <label htmlFor="to">Destination</label>
-            <input required type="text" onChange={this.handleChange('to')} value={this.state.to} className="form-control" id="to" />
+            <input required type="text" onChange={this.searchLocation('to')} className="form-control" id="to" />
           </div>
-          <div className="form-group">
+          <div className="py-2">Location: {this.state.data.to}</div>
+          <div className="form-group mt-3">
             <label htmlFor="weight">Size of Good (kg)</label>
             <input required type="number" onChange={this.handleChange('weight')} value={this.state.weight} className="form-control" id="weight" />
           </div>
-          <input type="hidden" name="location" onChange={this.handleChange('weight')} value={this.state.weight} />
           <button type="submit" className="btn btn-primary">
             Create Parcel
           </button>
         </form>
         <MapComponent
+          location={this.state.location}
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAtMfHXFUZ5RJFyoRSh0447GV2ZHNmcXLY&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: '100%' }} />}
           containerElement={<div className="col-md-6 col-sm-12 p-0" />}

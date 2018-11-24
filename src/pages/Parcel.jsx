@@ -11,6 +11,7 @@ export default class Parcel extends Component {
   async componentDidMount() {
     const { id } = this.props;
     try {
+      console.log(await api.getPlace('lagos'));
       const { data: parcel } = await api.get(`/parcels/${id}`);
       this.setState({ parcel: parcel[0] });
     } catch (err) {
@@ -21,7 +22,7 @@ export default class Parcel extends Component {
   render() {
     const { parcel } = this.state;
     return (
-      <div className="parcel-page d-flex page">
+      <div className="parcel-page d-flex flex-wrap page">
         <MapComponent
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAtMfHXFUZ5RJFyoRSh0447GV2ZHNmcXLY&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: '100%' }} />}
