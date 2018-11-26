@@ -50,7 +50,7 @@ const AppRouter = () => {
           <ConditionalRoute component={Auth} state={user} dispatch={dispatch} path="/auth" redirect="/" condition={!user.id} />
           <ConditionalRoute dispatch={dispatch} path="/users" component={Home} condition={!!user.id} />
           <ConditionalRoute dispatch={dispatch} path="/my-parcels" component={Parcels} condition={!!user.id} />
-          <ConditionalRoute dispatch={dispatch} path="/parcels/:id" component={Parcel} condition={!!user.id} user={user} />
+          <ConditionalRoute dispatch={dispatch} path="/parcels/:id" component={Parcel} condition={true} user={user} />
           <ConditionalRoute dispatch={dispatch} path="/create" component={CreateParcel} condition={!!user.id} />
         </App>
       </Router>

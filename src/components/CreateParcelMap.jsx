@@ -8,10 +8,10 @@ const MapComponent = withScriptjs(withGoogleMap(props => <GoogleMap
     defaultCenter={{ lat: 6.5538, lng: 3.3665 }}
     center={props.location}
   >
-    {props.chilren}
+    {props.children}
     <Marker
-      draggable={props.draggable}
-      onDragEnd={props.onDragEnd}
+      draggable={props.markerDraggable}
+      onDragEnd={props.onMarkerDragEnd}
       position={props.location}
     />
   </GoogleMap>));
