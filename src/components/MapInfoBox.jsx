@@ -1,8 +1,9 @@
 import React from 'react';
 import { InfoWindow } from 'react-google-maps';
 
-const MaopInfoBox = (from, to, current) => <InfoWindow>
-
+const MapInfoBox = (from, to, current) => <InfoWindow>
+  <strong>{from}</strong> to <strong>{to}</strong> is about 15km long,
+  Package is currently at <strong>{current}</strong>
 </InfoWindow>;
 
-export default MaopInfoBox;
+export default MapInfoBox;
