@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build:server": "npx babel lib -d dist",
-    "build": "npx babel lib -d dist && npx parcel build public/index.html -d build",
+    "build": "npx babel lib -d dist && cp lib/swagger.json dist && npx parcel build public/index.html -d build",
     "heroku-postbuild": "npm run build",
     "start": "node dist/index.js",
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
