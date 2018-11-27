@@ -1,6 +1,6 @@
 const toJSON = res => res.json();
 
-const API_ROOT = 'send-it-andela.herokuapp.com/api/v1';
+const API_ROOT = 'https://send-it-andela.herokuapp.com/api/v1';
 const MAP_URL_GEOCODE = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAtMfHXFUZ5RJFyoRSh0447GV2ZHNmcXLY&inputtype=textquery&region=ng&address=';
 
 let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjA4LCJlbWFpbCI6IiIsInJvbGUiOiIwIiwiaWF0IjoxNTQyNjE5NzM5fQ.xdAkOs5G5iQ6Ld300Igxwjfm3budqvEUt0he97MpSQA';
