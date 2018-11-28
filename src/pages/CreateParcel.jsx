@@ -49,7 +49,7 @@ export default class CreateParcel extends Component {
   render() {
     return (
       <div className="d-flex row align-items-stretch create-parcel page">
-        <form className="p-4 col-md-6 col-sm-12" onSubmit={ this.handleSubmit }>
+        <form className="p-4 pl-5 col-md-6 col-sm-12" onSubmit={ this.handleSubmit }>
           <h3 className="py-4">Create a parcel...</h3>
           <div className="form-group mb-1">
             <label htmlFor="from">From</label>

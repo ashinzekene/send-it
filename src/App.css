@@ -42,11 +42,6 @@ h1,h2,h3,h4,h5,h6 {
   height: 300px;
 }
 
-.parcel div:not('.label') {
-  color: var(--theme-color-2);
-  text-decoration: none;
-}
-.parcel :active, .parcel :hover {
-  color: var(--theme-color-2);
+a:hover {
   text-decoration: none;
 }

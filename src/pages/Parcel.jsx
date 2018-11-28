@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import { Polyline } from 'react-google-maps';
 import api from '../api';
 import MapComponent from '../components/CreateParcelMap';
+import CloseButton from '../components/CloseButton';
 
-
-const CloseButton = ({ onClick }) => (
-  <button onClick={onClick} type="button" className="close" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-);
 export default class Parcel extends Component {
   state = {
     parcel: null,
@@ -113,12 +108,12 @@ export default class Parcel extends Component {
         <div className="single-parcel col-md-6 p-4 col-sm-12">
           {this.state.parcel === null ? <div>Loading...</div>
             : <div className="parcel">
-            { error && <div className="alert alert-danger">
+            { !!error && <div className="alert alert-danger">
               {error}
               <CloseButton onClick={this.removeAlert} />
               </div>
             }
-            { message && <div className="alert alert-success">
+            { !!message && <div className="alert alert-success">
               {message}
               <CloseButton onClick={this.removeAlert} />
               </div>
@@ -136,26 +131,28 @@ export default class Parcel extends Component {
               </div>
               <div className="date">Date: {(new Date(parcel.senton)).toDateString()}</div>
             </div>
-            { isAdmin && <div className="form-group">
-              <label htmlFor="to">Change Status</label>
-              <select onChange={this.changeStatus} className="custom-select">
-                <option value="">Change status</option>
-                <option value="placed">Placed</option>
-                <option value="transiting">Transiting</option>
-                <option value="delivered">Delivered</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>}
-            {!isAdmin && <div className="form-group">
-              <label htmlFor="to">Destination</label>
-              <input required type="text" placeholder="Change Destination" onChange={this.searchLocation('newDestination')} className="form-control" id="to" />
-              <div className="py-2">Location: {this.state.newDestination}</div>
-            </div>}
-            {isAdmin && <div className="form-group">
-              <label htmlFor="to">Current Location</label>
-              <input required type="text" placeholder="Change Current Location" onChange={this.searchLocation('currentLocation')} className="form-control" id="to" />
-              <div className="py-2">Location: {this.state.currentLocation}</div>
-            </div>}
+            <div className="edit-form pt-5">
+              { isAdmin && <div className="form-group">
+                <label htmlFor="to">Change Status</label>
+                <select onChange={this.changeStatus} className="custom-select">
+                  <option value="">Change status</option>
+                  <option value="placed">Placed</option>
+                  <option value="transiting">Transiting</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>}
+              {!isAdmin && <div className="form-group">
+                <label htmlFor="to">Destination</label>
+                <input required type="text" placeholder="Change Destination" onChange={this.searchLocation('newDestination')} className="form-control" id="to" />
+                <div className="py-2">Location: {this.state.newDestination}</div>
+              </div>}
+              {isAdmin && <div className="form-group">
+                <label htmlFor="to">Current Location</label>
+                <input required type="text" placeholder="Change Current Location" onChange={this.searchLocation('currentLocation')} className="form-control" id="to" />
+                <div className="py-2">Location: {this.state.currentLocation}</div>
+              </div>}
+            </div>
             <button className="btn btn-success btn-block my-4">Save Changes</button>
             </div>
           }
