@@ -16,4 +16,4 @@ deploy:
 #   - postgresql
 before_script:
   - echo $DB_USER
-  - psql -c "create database send_it_test;"
+  - psql -c 'create database send_it_test;'
