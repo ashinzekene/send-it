@@ -1,0 +1,7 @@
+
+test:
+  adapter: postgresql
+  database: send_it_test
+  username: root
+  password: root
+  encoding: utf8
