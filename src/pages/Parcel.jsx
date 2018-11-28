@@ -11,7 +11,8 @@ export default class Parcel extends Component {
     location: { lat: 6.5538, lng: 3.3665 },
     path: [],
     message: '',
-    newDestination: '',
+    destination: '',
+    currentlocation: '',
     isAdmin: false,
   }
 
@@ -26,7 +27,7 @@ export default class Parcel extends Component {
       const { data: parcel } = await api.get(`/parcels/${id}`);
       this.setState({
         parcel: parcel[0],
-        currentLocation: parcel[0].currentlocation,
+        currentlocation: parcel[0].currentlocation,
         newDestination: parcel[0].to,
       });
       this.getLocations();
@@ -72,7 +73,6 @@ export default class Parcel extends Component {
     const { results } = await api.getPlace(target.value);
     if (results.length > 0) {
       this.setState({
-        location: results[0].geometry.location,
         [type]: results[0].formatted_address,
       });
     }
@@ -80,8 +80,28 @@ export default class Parcel extends Component {
 
   removeAlert = () => this.setState({ error: false, message: false });
 
-  handleDragEnd = () => {
-
+  update = async () => {
+    const { to, currentlocation, isAdmin } = this.state;
+    let body; let urlPath;
+    if (isAdmin) {
+      body = { currentlocation };
+      urlPath = 'currentlocation';
+    } else {
+      body = { to };
+      urlPath = 'destination';
+    }
+    try {
+      const { data, error, status } = await api.patch(`/parcels/${this.props.id}/${urlPath}`, body);
+      if (status === 200) {
+        this.setState({ message: data.message });
+      } else {
+        this.setState({ error });
+      }
+      this.getParcel();
+    } catch (error) {
+      console.log({ error });
+      this.setState({ error: error.message });
+    }
   }
 
   render() {
@@ -144,16 +164,16 @@ export default class Parcel extends Component {
               </div>}
               {!isAdmin && <div className="form-group">
                 <label htmlFor="to">Destination</label>
-                <input required type="text" placeholder="Change Destination" onChange={this.searchLocation('newDestination')} className="form-control" id="to" />
-                <div className="py-2">Location: {this.state.newDestination}</div>
+                <input required type="text" placeholder="Change Destination" onChange={this.searchLocation('to')} className="form-control" id="to" />
+                <div className="py-2">Location: {this.state.to}</div>
               </div>}
               {isAdmin && <div className="form-group">
                 <label htmlFor="to">Current Location</label>
-                <input required type="text" placeholder="Change Current Location" onChange={this.searchLocation('currentLocation')} className="form-control" id="to" />
-                <div className="py-2">Location: {this.state.currentLocation}</div>
+                <input required type="text" placeholder="Change Current Location" onChange={this.searchLocation('currentlocation')} className="form-control" id="to" />
+                <div className="py-2">Location: {this.state.currentlocation}</div>
               </div>}
             </div>
-            <button className="btn btn-success btn-block my-4">Save Changes</button>
+            <button onClick={this.update} className="btn btn-success btn-block my-4">Save Changes</button>
             </div>
           }
         </div>
