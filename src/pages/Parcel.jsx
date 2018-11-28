@@ -4,23 +4,40 @@ import api from '../api';
 import MapComponent from '../components/CreateParcelMap';
 
 
+const CloseButton = ({ onClick }) => (
+  <button onClick={onClick} type="button" className="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+);
 export default class Parcel extends Component {
   state = {
     parcel: null,
     error: false,
     location: { lat: 6.5538, lng: 3.3665 },
     path: [],
+    message: '',
+    newDestination: '',
+    isAdmin: false,
   }
 
   async componentDidMount() {
+    this.setState({ isAdmin: !!(+this.props.user.isAdmin) });
+    this.getParcel();
+  }
+
+  getParcel = async () => {
     const { id } = this.props;
     try {
       const { data: parcel } = await api.get(`/parcels/${id}`);
-      this.setState({ parcel: parcel[0] });
+      this.setState({
+        parcel: parcel[0],
+        currentLocation: parcel[0].currentlocation,
+        newDestination: parcel[0].to,
+      });
       this.getLocations();
       this.getDistanceMetrics();
     } catch (err) {
-      this.setState({ error: true });
+      this.setState({ error: 'A network error occurred' });
     }
   }
 
@@ -33,7 +50,7 @@ export default class Parcel extends Component {
     const { from, to } = this.state.parcel;
     const results = await Promise.all([from, to].map(api.getPlace));
     const path = results.map(({ results: res }) => res[0].geometry.location);
-    this.setState({ location: path[0] });
+    this.setState({ location: path[1] });
     this.setState({ path });
   }
 
@@ -41,13 +58,41 @@ export default class Parcel extends Component {
     this.setState({ [type]: target.value });
   }
 
+  changeStatus = async ({ target }) => {
+    this.setState({ error: false, message: false });
+    try {
+      const { error, status, message } = await api.patch(`/parcels/${this.props.id}/status`, { status: target.value });
+      if (status !== 200) {
+        this.setState({ error });
+      } else {
+        this.setState({ message });
+        this.getParcel();
+      }
+    } catch (err) {
+      this.setState({ error: 'A network error occurred' });
+    }
+  }
+
+  searchLocation = type => async ({ target }) => {
+    const { results } = await api.getPlace(target.value);
+    if (results.length > 0) {
+      this.setState({
+        location: results[0].geometry.location,
+        [type]: results[0].formatted_address,
+      });
+    }
+  }
+
+  removeAlert = () => this.setState({ error: false, message: false });
+
   handleDragEnd = () => {
 
   }
 
-
   render() {
-    const { parcel, path } = this.state;
+    const {
+      parcel, path, error, message, isAdmin,
+    } = this.state;
     return (
       <div className="parcel-page d-flex flex-wrap page">
         <MapComponent
@@ -65,26 +110,53 @@ export default class Parcel extends Component {
               path={path}
               />}
           </MapComponent>
-        <div className="single-parcel col-md-6 col-sm-12">
+        <div className="single-parcel col-md-6 p-4 col-sm-12">
           {this.state.parcel === null ? <div>Loading...</div>
             : <div className="parcel">
+            { error && <div className="alert alert-danger">
+              {error}
+              <CloseButton onClick={this.removeAlert} />
+              </div>
+            }
+            { message && <div className="alert alert-success">
+              {message}
+              <CloseButton onClick={this.removeAlert} />
+              </div>
+            }
             <div className="locations d-flex row">
-              <h3 className="col-md-5 col-sm-12">{ parcel.from }</h3>
-              <h3 className="col-md-2 col-sm-12">&rarr;</h3>
-              <h3 className="col-md-5 col-sm-12">{ parcel.to }</h3>
+              <h5 className="col-md-5 col-sm-12">{ parcel.from }</h5>
+              <h5 className="col-md-2 col-sm-12">&rarr;</h5>
+              <h5 className="col-md-5 col-sm-12">{ parcel.to }</h5>
             </div>
-            <div className="status">{parcel.currentlocation}</div>
-            <div className="badge badge-primary">{parcel.status}</div>
-            <div className="date">Date: {(new Date(parcel.senton)).toDateString()}</div>
-            <select className="custom-select">
-              <option onChange={this.handleChange('status')} value="">Change status</option>
-              <option value="placed">Placed</option>
-              <option value="transiting">Transiting</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <button className="btn btn-block my-4 py-3">Change current location</button>
-            <button className="btn btn-block my-4 py-3">Change destination</button>
+            <div className="parcel-details justify-content-between d-flex flex-wrap py-3">
+              <div className="location w-100">Current Location: {parcel.currentlocation}</div>
+              <div className="status">
+                Status: {' '}
+                <div className="badge px-3 py-2 badge-primary">{parcel.status}</div>
+              </div>
+              <div className="date">Date: {(new Date(parcel.senton)).toDateString()}</div>
+            </div>
+            { isAdmin && <div className="form-group">
+              <label htmlFor="to">Change Status</label>
+              <select onChange={this.changeStatus} className="custom-select">
+                <option value="">Change status</option>
+                <option value="placed">Placed</option>
+                <option value="transiting">Transiting</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>}
+            {!isAdmin && <div className="form-group">
+              <label htmlFor="to">Destination</label>
+              <input required type="text" placeholder="Change Destination" onChange={this.searchLocation('newDestination')} className="form-control" id="to" />
+              <div className="py-2">Location: {this.state.newDestination}</div>
+            </div>}
+            {isAdmin && <div className="form-group">
+              <label htmlFor="to">Current Location</label>
+              <input required type="text" placeholder="Change Current Location" onChange={this.searchLocation('currentLocation')} className="form-control" id="to" />
+              <div className="py-2">Location: {this.state.currentLocation}</div>
+            </div>}
+            <button className="btn btn-success btn-block my-4">Save Changes</button>
             </div>
           }
         </div>
