@@ -62,3 +62,4 @@ typings/
 .next
 *.http
 dist
+.coveralls.yml

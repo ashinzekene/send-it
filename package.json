@@ -13,7 +13,7 @@
     "dev:client": "parcel public/index.html",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
-    "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit  | coveralls"
+    "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit"
   },
   "keywords": [],
   "author": "Ashinze Ekene",
