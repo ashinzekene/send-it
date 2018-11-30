@@ -11,8 +11,9 @@
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npx concurrently npm:dev:*",
     "dev:client": "parcel public/index.html",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
-    "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit"
+    "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit  | coveralls"
   },
   "keywords": [],
   "author": "Ashinze Ekene",
