@@ -5,15 +5,15 @@ node_js:
 install:
   - npm install
 script:
-  - npm lint
+  - npm run lint
 deploy:
   provider: heroku
   api_key: 
     secure: "1852fac1-9963-42ee-84a4-2a6cc7c1ce45"
   on:
     all_branches: true
-services:
-  - postgresql
+# services:
+#   - postgresql
 before_script:
   - echo $DB_USER
   -  psql -c "CREATE DATABASE $TEST_DB_DATABASE;" -U postgres
