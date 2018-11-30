@@ -53,7 +53,6 @@ describe('PARCELS', () => {
   it(`GET ${URL_PREFIX}parcels/:id Should get a single parcel by id`, async () => {
     const { body, status } = await chaiReq.get(`${URL_PREFIX}parcels/${parcelId}`);
     expect(status).to.equal(200);
-    // console.log(body.data);
     expect(body.data[0]).to.include.all.keys('weight', 'from', 'to');
     expect(body.data[0]).to.have.property('from', testParcel.from);
   });
