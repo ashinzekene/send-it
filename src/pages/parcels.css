@@ -1,0 +1,13 @@
+.a-parcel {
+  box-shadow: 1px 1px 6px 0px rgba(120, 120, 120, 0.2);
+  transition: all 500ms;
+  border: none;
+}
+
+a.a-parcel * {
+  color: var(--theme-color-2);
+}
+
+.a-parcel:hover {
+  box-shadow: 0px 0px 30px 0px rgba(120, 120, 120, 0.3);
+}

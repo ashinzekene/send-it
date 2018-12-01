@@ -1,0 +1,397 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Send IT Andela",
+    "description": "A simple application for maing and delivering parcels and tracking locations",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:4001",
+  "basePath": "/api/v1",
+  "tags": [{
+      "name": "Users",
+      "description": "API for users in the system"
+    },
+    {
+      "name": "Parcels",
+      "description": "Parcels to be delivered"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Create new user in system",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstname": {
+                    "description": "Firstname of user",
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "description": "Lastname of user to be created",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "Email of the user to be created",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Password of user to be created",
+                    "type": "string"
+                  }
+                },
+                "required": ["firstname", "lastname", "email", "password"]
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New user is created",
+            "content": {
+              "$ref": "#/components/schemas/UsersResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schema/UsersResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "parameters": [{
+        "name": "userId",
+        "in": "path",
+        "required": true,
+        "description": "ID of user to find",
+        "type": "string"
+      }],
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of user to find",
+          "type": "integer"
+        }],
+        "summary": "Get user with given ID",
+        "responses": {
+          "200": {
+            "description": "User is found",
+            "schema": {
+              "$ref": "#/components/UsersResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user with give ID",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/{user}/parcels": {
+      "get": {
+        "tags": [
+          "Users",
+          "Parcels"
+        ],
+        "parameters": [{
+          "name": "user",
+          "in": "body",
+          "description": "User id",
+          "type": "integer"
+        }],
+        "summary": "Get all parcles from a user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schema/ParcelsResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "required": [
+        "email",
+        "password",
+        "firstame"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "othername": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    },
+    "Parcel": {
+      "required": [
+        "from",
+        "to",
+        "weight"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "placedBy": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer"
+        },
+        "weightMetric": {
+          "type": "string"
+        },
+        "senton": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deliveredon": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "currentLocation": {
+          "type": "string"
+        }
+      }
+    },
+    "Parcels": {
+      "type": "array",
+      "$ref": "#/definitions/Parcel"
+    }
+  },
+  "components": {
+    "schemas": {
+      "GeneralError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UsersResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      },
+      "ParcelsResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        }
+      },
+      "EditParcelResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "id": {
+                "type": "integer",
+                "description": "id of the parcel"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "EditDestinationResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "id": {
+                "type": "integer",
+                "description": "id of the parcel"
+              },
+              "to": {
+                "type": "string",
+                "description": "updated location address"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "EditStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "id": {
+                "type": "integer"
+              },
+              "status": {
+                "type": "string",
+                "description": "updated status"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "EditCurrentLocationResponse": {
+        "type": "object",
+        "properties": {
+          "status" : {
+            "type":"string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "id": {
+                "type": "integer"
+              },
+              "currentLocation": {
+                "type": "string",
+                "description": "updated current location"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

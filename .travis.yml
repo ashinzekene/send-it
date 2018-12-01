@@ -9,14 +9,13 @@ script:
 deploy:
   provider: heroku
   api_key: 
-    secure: "1852fac1-9963-42ee-84a4-2a6cc7c1ce45"
+    secure: $HEROKU_KEY
   on:
     all_branches: true
 # services:
 #   - postgresql
 # before_script:
 #   - echo $DB_USER
-#   - psql -c "create database send_it_test; create user send_it_test with password 'send_it_test'; grant all privileges on database send_it_test to send_it_test;' -U postgres
-# env:
-#   globals:
-#     - PGPORT=$TEST_DB_PORT
+#   -  psql -c "CREATE DATABASE $TEST_DB_DATABASE;" -U postgres
+#   - psql -c "CREATE USER root WITH PASSWORD 'root';" -U postgres
+#   - cp config/database.travis.yml config/database.yml

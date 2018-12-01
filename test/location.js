@@ -8,11 +8,11 @@ const URL_PREFIX = '/api/v1/';
 const chaiReq = chai.request(server).keepOpen();
 const { expect } = chai;
 
-describe.only('PARCELS', () => {
-  it(`GET ${URL_PREFIX}locations/distance-matrix Should create a parcel`, async () => {
+describe('PARCELS', () => {
+  it(`POST ${URL_PREFIX}locations/distance-matrix get distance matrix`, async () => {
     const { body } = await chaiReq.post(`${URL_PREFIX}locations/distance-matrix`)
-      .send({ from: 'Lagos', destination: 'Abuja' });
-    console.log({ body });
-    expect(body).to.exist; // eslint-disable-line
+      .send({ origin: 'Lagos', destination: 'Abuja' });
+    expect(body.status).to.eql(200);
+    expect(body.data.rows).to.be.an('array');
   });
 });

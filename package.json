@@ -11,6 +11,7 @@
     "dev:server": "npx nodemon --watch lib --exec babel-node lib/index.js",
     "dev": "npx concurrently npm:dev:*",
     "dev:client": "parcel public/index.html",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "./node_modules/.bin/eslint lib/ --fix",
     "test": "NODE_ENV=test PORT=4002 npx nyc mocha --exit"
   },
@@ -46,6 +47,7 @@
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "coveralls": "^3.0.2",
     "dotenv": "^6.1.0",
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.4",
@@ -54,7 +56,8 @@
     "pg": "^7.6.1",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
-    "react-google-maps": "^9.4.5"
+    "react-google-maps": "^9.4.5",
+    "swagger-ui-express": "^4.0.1"
   },
   "nyc": {
     "require": [
