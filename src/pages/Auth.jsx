@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { navigate } from '@reach/router/lib/history';
 import CloseButton from '../components/CloseButton';
 import api from '../api';
 import './Auth.css';
@@ -12,6 +11,7 @@ export default class Auth extends Component {
   }
 
   handleChange = x => (e) => {
+    console.log(e.target.value);
     this.setState(({ data }) => ({ data: { ...data, [x]: e.target.value } }));
     e.persist();
   }
@@ -26,10 +26,14 @@ export default class Auth extends Component {
     const { data, status, error } = await api.post(url, this.state.data);
     if (status === 200) {
       this.props.dispatch({ type: 'LOGIN', payload: data[0] });
-      navigate('/');
+      this.props.history.push('/');
     } else {
       this.setState({ error });
     }
+  }
+
+  toggleCheck = () => {
+    this.setState(({ data }) => ({ data: { ...data, isAdmin: !data.isAdmin } }));
   }
 
   removeAlert = () => this.setState({ error: false });
@@ -68,7 +72,7 @@ export default class Auth extends Component {
             <input type="password" required onChange={this.handleChange('password')} placeholder="Password" value={this.state.password} className="form-control" id="password" />
           </div>
           <div className="form-check">
-            <input onChange={this.handleChange('isAdmin')} value={this.state.isAdmin} className="form-check-input" type="radio" id="is-admin" checked/>
+            <input type="checkbox" onChange={this.toggleCheck} value={this.state.isAdmin} className="form-check-input" id="is-admin" />
             <label className="form-check-label" htmlFor="is-admin">
               Admin?
             </label>

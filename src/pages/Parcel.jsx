@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Polyline } from 'react-google-maps';
 import api from '../api';
 import MapComponent from '../components/CreateParcelMap';
@@ -14,6 +14,7 @@ export default class Parcel extends Component {
     destination: '',
     currentlocation: '',
     isAdmin: false,
+    matrix: false,
   }
 
   async componentDidMount() {
@@ -39,7 +40,11 @@ export default class Parcel extends Component {
 
   getDistanceMetrics = async () => {
     const { from, to } = this.state.parcel;
-    console.log(await api.getDistance(from, to));
+    const { data } = await api.post('/locations/distance-matrix', {
+      origin: from,
+      destination: to,
+    });
+    this.setState({ matrix: data.rows[0].elements[0] });
   }
 
   getLocations = async () => {
@@ -132,13 +137,15 @@ export default class Parcel extends Component {
           containerElement={<div className="col-md-6 col-sm-12 p-0" style={{ minHeight: '400px' }} />}
           mapElement={<div className="h-100" />}
           >
-            { path.length > 1 && <Polyline
-              geodesic={true}
-              strokeColor="#FF0000"
-              strokeOpacity={1.0}
-              strokeWeight={3}
-              path={path}
-              />}
+            <Fragment>
+              { path.length > 1 && <Polyline
+                geodesic={true}
+                strokeColor="#FF0000"
+                strokeOpacity={1.0}
+                strokeWeight={3}
+                path={path}
+                />}
+            </Fragment>
           </MapComponent>
         <div className="single-parcel col-md-6 p-4 col-sm-12">
           {this.state.parcel === null ? <div>Loading...</div>
