@@ -54,6 +54,21 @@ export default class Parcel extends Component {
     this.setState({ [type]: target.value });
   }
 
+  cancel = async () => {
+    this.setState({ error: false, message: false });
+    try {
+      const { error, status, message } = await api.patch(`/parcels/${this.props.id}/cancel`);
+      if (status !== 200) {
+        this.setState({ error });
+      } else {
+        this.setState({ message });
+        this.getParcel();
+      }
+    } catch (err) {
+      this.setState({ error: 'A network error occurred' });
+    }
+  }
+
   changeStatus = async ({ target }) => {
     this.setState({ error: false, message: false });
     try {
@@ -174,6 +189,7 @@ export default class Parcel extends Component {
               </div>}
             </div>
             <button onClick={this.update} className="btn btn-success btn-block my-4">Save Changes</button>
+            <button onClick={this.cancel} className="btn btn-danger btn-block my-4">Cancel Parcel</button>
             </div>
           }
         </div>
